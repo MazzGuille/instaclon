@@ -14,7 +14,7 @@
             <label class="form-label" for="emailinput"
               ><i class="bi bi-envelope-fill text-primary"></i> E-Mail</label>
             <input
-              v-model="Email"
+              
               type="email"
               name="Email"
               id="emailinput"
@@ -25,7 +25,7 @@
             <label class="form-label" for="nombreinput"
               ><i class="bi bi-person-fill text-primary"></i> Nombre</label>
             <input
-              v-model="Nombre"
+              
               type="text"
               name="Nombre"
               id="nombreinput"
@@ -37,7 +37,7 @@
               ><i class="bi bi-person-fill text-primary"></i> Nombre de usuario</label
             >
             <input
-              v-model="UserName"
+              
               type="text"
               name="UserName"
               id="username"
@@ -45,7 +45,7 @@
             />
           </div>
 
-      <!--    <div class="form-group mb-4 px-2 d-flex flex-column align-items-start">
+         <div class="form-group mb-4 px-2 d-flex flex-column align-items-start">
             <label class="form-label" for="imageninput"
               ><i class="bi bi-image-fill text-primary"></i> Imagen de perfil</label
             >
@@ -67,7 +67,7 @@
               class="form-control form-control-sm"
             />
           </div>
-        -->
+      
 
 
           <div class="form-group mb-4 px-2 d-flex flex-column align-items-start">
@@ -75,7 +75,7 @@
               ><i class="bi bi-key-fill text-primary"></i> Contraseña</label
             >
             <input
-            v-model="Contraseña"
+           
               type="password"
               name="Contraseña"
               id="passwdinput"
@@ -87,7 +87,7 @@
               ><i class="bi bi-key-fill text-primary"></i> Confirmar contraseña</label
             >
             <input
-            v-model="ConfirmarContraseña"
+           
               type="password"
               name="ConfirmarContraseña"
               id="confirmpasswdinput"
@@ -126,20 +126,7 @@ export default {
     name:'Registro',
 
      setup () {
-      const result = ref(null)
-      const Email = ref(null)
-      const Nombre = ref(null)
-      const UserName = ref(null)
-      const Contraseña = ref(null)
-      const ConfirmarContraseña = ref(null)
-
-          const crearUsuario = axios.post('https://localhost:7158/api/Usuario/CrearUsuario', 
-          Email = this.Email, Nombre = this.Nombre, UserName = this.UserName, Contraseña = this.Contraseña
-          ).then((response) =>{
-            console.log(response)
-          })
-
-          crearUsuario()
+     
 
       return {}
     }
