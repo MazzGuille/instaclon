@@ -38,7 +38,7 @@
             >
             <input
               v-model="Contraseña"
-              type="text"
+              type="password"
               name="Contraseña"
               id="passwdinput"
               class="form-control form-control-sm"
@@ -98,6 +98,10 @@ export default {
       {
        alert("Usuario logeado con exito")
        window.location.replace('/Test');
+      }
+      else{
+        alert("Credenciales invalidas")
+        window.location.reload('/Login')
       }
       
     });

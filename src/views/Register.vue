@@ -157,7 +157,7 @@ methods:{
     {
       alert("Usuario registrado con exito")
       window.location.replace('/Login');
-    }
+    }   
    });
     //.then((res) => res.json())
     //.then((data => this.posts = data))
