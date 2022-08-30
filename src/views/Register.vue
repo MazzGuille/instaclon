@@ -14,22 +14,24 @@
             <label class="form-label" for="emailinput"
               ><i class="bi bi-envelope-fill text-primary"></i> E-Mail</label>
             <input
-              ref="Email"
+              v-model="Email"
               type="email"
               name="Email"
               id="emailinput"
               class="form-control form-control-sm"
+              
             />
           </div>
           <div class="form-group mb-4 px-2 d-flex flex-column align-items-start">
             <label class="form-label" for="nombreinput"
               ><i class="bi bi-person-fill text-primary"></i> Nombre</label>
             <input
-              ref="Nombre"
+              v-model="Nombre"
               type="text"
               name="Nombre"
               id="nombreinput"
               class="form-control form-control-sm"
+             
             />
           </div>
           <div class="form-group mb-4 px-2 d-flex flex-column align-items-start">
@@ -37,11 +39,12 @@
               ><i class="bi bi-person-fill text-primary"></i> Nombre de usuario</label
             >
             <input
-              ref="UserName"
+              v-model="UserName"
               type="text"
               name="UserName"
               id="username"
               class="form-control form-control-sm"
+             
             />
           </div>
 <!--
@@ -75,11 +78,12 @@
               ><i class="bi bi-key-fill text-primary"></i> Contraseña</label
             >
             <input
-              ref="Contraseña"
+              v-model="Contraseña"
               type="password"
               name="Contraseña"
               id="passwdinput"
               class="form-control form-control-sm"
+              
             />
           </div>
           <div class="form-group mb-4 px-2 d-flex flex-column align-items-start">
@@ -87,11 +91,10 @@
               ><i class="bi bi-key-fill text-primary"></i> Confirmar contraseña</label
             >
             <input
-              ref="ConfirmarClave"
               type="password"
-              name="ConfirmarContraseña"
               id="confirmpasswdinput"
               class="form-control form-control-sm"
+              v-model="ConfirmarClave"
             />
           </div>
           <div class="boton-container">
@@ -107,10 +110,8 @@
             <div class="d-flex justify-content-center links">
               <p>
                 ¿Ya tienes una cuenta?
-                             <router-link class="hiperLink text-primary" to="/login">Inicia sesion aqui!</router-link>
-              </p>
-              <br>
-              <p>{{user}} X</p>
+                             <router-link class="hiperLink text-primary" :to="{name: 'Login'}">Inicia sesion aqui!</router-link>
+              </p>              
               
             </div>
           </div>
@@ -125,9 +126,51 @@ import axios from "axios";
 import {ref} from 'vue'
 
 export default {
-  name:'Registro',   
+  name:'Registro',  
+  
+  data(){
+    return{
+      posts: [],
+      Email : '',
+      Nombre : '',
+      UserName : '',
+      Contraseña : '',
+      ConfirmarClave : ''
+    }
+  },
 
-  setup () {
+methods:{
+  crearUsuario(e){
+    e.preventDefault();
+    let datos = this;
+    let jsonDatos = {
+      Email: datos.Email,
+      Nombre: datos.Nombre,
+      UserName: datos.UserName,
+      Contraseña: datos.Contraseña,
+      ConfirmarClave: datos.ConfirmarClave
+    };  
+
+    axios.post('https://localhost:7158/api/Usuario/CrearUsuario', jsonDatos).then(res =>{
+    console.log(res);
+    if(res.status === 200)
+    {
+      alert("Usuario registrado con exito")
+      window.location.replace('/Login');
+    }
+   });
+    //.then((res) => res.json())
+    //.then((data => this.posts = data))
+    console.log(jsonDatos);
+  }
+
+  },
+
+  
+}
+ 
+
+ /*  setup () {
     const user = ref(null)
     const Email = ref(null)
     const Nombre = ref(null)
@@ -135,7 +178,7 @@ export default {
     const Contraseña = ref(null)
     const ConfirmarClave = ref(null)     
 
-    const crearUsuario = () =>{                
+   const crearUsuario = () =>{                
       axios.post('https://localhost:7158/api/Usuario/CrearUsuario', Email.value = Email, Nombre.value = Nombre, 
       UserName.value = UserName, Contraseña.value = Contraseña, ConfirmarClave.value = ConfirmarClave)
       .then(response => {
@@ -147,9 +190,9 @@ export default {
     }
     crearUsuario()
     return {Email, Nombre, UserName, Contraseña, ConfirmarClave}
-    }
+    } */
     
-}
+
 </script>
 
 <style scoped>
