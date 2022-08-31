@@ -31,6 +31,12 @@
               id="emailinput"
               class="form-control form-control-sm"
             />
+            <span class="validacion" v-if="mailFormat">
+              Formato de E-Mail incorrecto
+           </span>
+            <span class="validacion" v-if="valEmail">
+              El campo "Email" es requerido
+            </span>
           </div>
           <div class="form-group mb-4 px-2 d-flex flex-column align-items-start">
             <label class="form-label" for="passwdinput"
@@ -43,8 +49,14 @@
               id="passwdinput"
               class="form-control form-control-sm"
             />
+            <span class="validacion" v-if="valPass">
+              El campo "Contraseña" es requerido
+            </span>
           </div>
-          <div class="boton-container">
+          <span class="validacion" v-if="valCred">
+            Credenciales invalidas
+          </span>
+          <div class="boton-container mt-2">
             <button
              @click="iniciarSesion"
               type="submit"
@@ -64,7 +76,7 @@
           <div class="mt-4">
             <div class="d-flex justify-content-center links">
               <span>¿Aun no tienes una cuenta?</span>
-              <router-link class="hiperLink text-primary" :to="{name: 'Registro'}"> Registrate!</router-link>
+              <router-link class="hiperLink text-primary" :to="{name: 'Registro'}"> ¡Registrate!</router-link>
             </div>
           </div>
         </form>
@@ -81,12 +93,43 @@ export default {
     data(){
       return{
         Email: '',
-        Contraseña: ''
+        valEmail: false,
+        mailFormat: false,
+        Contraseña: '',
+        valPass: false,
+        valCred: false
       }
     },
-    methods:{         
+    methods:{   
+       emailVacio(){
+        if(this.Email.length === 0)
+        this.valEmail = true
+      },
+
+      ValEmailFormat(){
+      var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      if(this.Email.match(validRegex)){
+        this.mailFormat = false
+      }else{
+        this.mailFormat = true
+      }
+    },
+
+       passVacio(){
+        if(this.Contraseña.length === 0)
+        this.valPass = true
+      },
+
+       credInvalido(){
+        this.valCred = true
+      },
+      
       iniciarSesion(e){
       e.preventDefault();
+
+      this.emailVacio();
+      this.passVacio();
+      this.ValEmailFormat();
       let datos = this;
       let jsonDatos = {
         Email: datos.Email,
@@ -100,12 +143,11 @@ export default {
        window.location.replace('/Test');
       }
       else{
-        alert("Credenciales invalidas")
-        window.location.reload('/Login')
+        this.credInvalido()
       }
       
-    });
-    console.log(jsonDatos);
+      
+    });   
 
   }
 }
@@ -123,6 +165,16 @@ export default {
 
 .inner-form-container{
     width: 100%;
+}
+
+.validacion{
+  background-color: transparent;
+  border-radius: 16px;
+  border: 1px solid crimson;
+  color: crimson;
+  margin-top: 5px;
+  padding: 5px;
+  font-weight: bold;
 }
 
 </style>
