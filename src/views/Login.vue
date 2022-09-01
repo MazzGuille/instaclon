@@ -1,92 +1,105 @@
 <template>
-      <div
-    class="
-      row
-      m-2
-      container
-      d-flex
-      align-content-center
-      justify-content-center
-      wrapper
-    "
-  >
-    <div class="col-sm-6 col-12 img-container">
-      <img
-        class="h-100 w-100"
-        src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
-        alt=""
-      />
-    </div>
-    <div class="col-sm-6 col-12 form-container p-2">
-      <div class="h-100 d-flex align-items-center justify-content-center">
-        <form  class="inner-form-container">
-          <div class="form-group mb-4 px-2 d-flex flex-column align-items-start">
-            <label class="form-label" for="emailinput"
-              ><i class="bi bi-envelope-fill text-primary"></i> E-Mail</label
-            >
-            <input
-              v-model="Email"
-              type="email"
-              name="Email"
-              id="emailinput"
-              class="form-control form-control-sm"
-            />
-            <span class="validacion" v-if="mailFormat">
-              Formato de E-Mail incorrecto
-           </span>
-            <span class="validacion" v-if="valEmail">
-              El campo "Email" es requerido
+  
+    <div
+      class="
+        row
+        m-2
+        container
+        d-flex
+        align-content-center
+        justify-content-center
+        wrapper
+      "
+    >
+      <transition appear @enter="imgEnter">
+        <div class="col-sm-6 col-12 img-container">
+          <img
+            class="h-100 w-100"
+            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+            alt=""
+          />
+        </div>
+      </transition>
+      <div class="col-sm-6 col-12 form-container mt-5 p-2 h-100 d-flex align-items-center justify-content-center">
+    
+          <form  class="inner-form-container">
+            <transition appear @enter="mailEnter">
+              <div class="form-group mb-4 px-2 d-flex flex-column align-items-start">
+                <label class="form-label" for="emailinput"
+                  ><i class="bi bi-envelope-fill text-primary"></i> E-Mail</label
+                >
+                <input
+                  v-model="Email"
+                  type="email"
+                  name="Email"
+                  id="emailinput"
+                  class="form-control form-control-sm"
+                />
+                <span class="validacion" v-if="mailFormat">
+                  Formato de E-Mail incorrecto
+               </span>
+                <span class="validacion" v-if="valEmail">
+                  El campo "Email" es requerido
+                </span>
+              </div>
+            </transition>
+            <transition appear @enter="passEnter">
+              <div class="form-group mb-4 px-2 d-flex flex-column align-items-start">
+                <label class="form-label" for="passwdinput"
+                  ><i class="bi bi-key-fill text-primary"></i> Contraseña</label
+                >
+                <input
+                  v-model="Contraseña"
+                  type="password"
+                  name="Contraseña"
+                  id="passwdinput"
+                  class="form-control form-control-sm"
+                />
+                <span class="validacion" v-if="valPass">
+                  El campo "Contraseña" es requerido
+                </span>
+              </div>
+            </transition>
+            <span class="validacion" v-if="valCred">
+              Credenciales invalidas
             </span>
-          </div>
-          <div class="form-group mb-4 px-2 d-flex flex-column align-items-start">
-            <label class="form-label" for="passwdinput"
-              ><i class="bi bi-key-fill text-primary"></i> Contraseña</label
-            >
-            <input
-              v-model="Contraseña"
-              type="password"
-              name="Contraseña"
-              id="passwdinput"
-              class="form-control form-control-sm"
-            />
-            <span class="validacion" v-if="valPass">
-              El campo "Contraseña" es requerido
-            </span>
-          </div>
-          <span class="validacion" v-if="valCred">
-            Credenciales invalidas
-          </span>
-          <div class="boton-container mt-2">
-            <button
-             @click="iniciarSesion"
-              type="submit"
-              class="
-                boton
-                btn
-                text-primary
-                bg-white
-                border border-primary
-                btn-block
-                boton
-              "
-            >
-              Iniciar Sesión
-            </button>
-          </div>
-          <div class="mt-4">
-            <div class="d-flex justify-content-center links">
-              <span>¿Aun no tienes una cuenta?</span>
-              <router-link class="hiperLink text-primary" :to="{name: 'Registro'}"> ¡Registrate!</router-link>
-            </div>
-          </div>
-        </form>
+            <transition appear @enter="btnEnter">
+              <div class="boton-container mt-2">
+                <button
+                 @click="iniciarSesion"
+                  type="submit"
+                  class="
+                    boton
+                    btn
+                    text-primary
+                    bg-white
+                    border border-primary
+                    btn-block
+                    boton
+                  "
+                >
+                  Iniciar Sesión
+                </button>
+              </div>
+            </transition>
+            <transition appear @enter="txtEnter">
+              <div class="mt-4">
+                <div class="d-flex justify-content-center links">
+                  <span>¿Aun no tienes una cuenta?</span>
+                  <router-link  class="hiperLink text-primary" :to="{name: 'Registro'}"> ¡Registrate!</router-link>
+                </div>
+              </div>
+            </transition>
+          </form>
+    
       </div>
     </div>
-  </div>
+  
 </template>
 
 <script>
 import axios from "axios";
+import gsap from 'gsap';
 
 export default {
   name:'Login',
@@ -100,7 +113,51 @@ export default {
         valCred: false
       }
     },
-    methods:{   
+    methods:{  
+    imgEnter(el){
+      gsap.from(el, {
+        opacity: 0,
+        duration: 4,
+        delay: .5
+      })
+    }, 
+
+     mailEnter(el){
+      gsap.from(el, {
+        opacity: 0,
+        duration: 2,
+        y: 60,
+        delay: 1
+      })
+    },
+
+     passEnter(el){
+      gsap.from(el, {
+        opacity: 0,
+        duration: 2,
+        y: 60,
+        delay: 1.5
+      })
+    },
+
+     btnEnter(el){
+      gsap.from(el, {
+        opacity: 0,
+        duration: 2,
+        x: -120,
+        delay: 2
+      })
+    },
+
+     txtEnter(el){
+      gsap.from(el, {
+        opacity: 0,
+        duration: 2,
+        x: -120,
+        delay: 2.5
+      })
+    },
+      
        emailVacio(){
         if(this.Email.length === 0)
         this.valEmail = true

@@ -2,182 +2,196 @@
   <div
     class="row m-2 d-flex align-content-center justify-content-center wrapper"
   >
-    <div class="col-sm-6 col-12 img-container">
-      <img src="../assets/register.png" alt="" class="h-100 w-100" />
-    </div>
-    <div class="col-sm-6 col-12 form-container p-2">
-      <div
-        class="
-          h-100
-          d-flex
-          flex-column
-          align-items-center
-          justify-content-center
-        "
-      >
-        <form class="inner-form-container">
-          <div
-            class="form-group mb-4 px-2 d-flex flex-column align-items-start"
-          >
-            <label class="form-label" for="emailinput"
-              ><i class="bi bi-envelope-fill text-primary"></i> E-Mail</label
-            >
-            <input
-              v-model="Email"
-              type="email"
-              name="Email"
-              id="emailinput"
-              class="form-control form-control-sm"
-            />
-            <span class="validacion" v-if="EmailExist">
-              El mail ingresado ya existe
-            </span>
-           <span class="validacion" v-if="valEmail">
-              El campo E-Mail es requerido
-           </span>
-           <span class="validacion" v-if="mailFormat">
-              Formato de E-Mail incorrecto
-           </span>
-          </div>
-
-          <div
-            class="form-group mb-4 px-2 d-flex flex-column align-items-start"
-          >
-            <label class="form-label" for="nombreinput"
-              ><i class="bi bi-person-fill text-primary"></i> Nombre</label
-            >
-            <input
-              v-model="Nombre"
-              type="text"
-              name="Nombre"
-              id="nombreinput"
-              class="form-control form-control-sm"
-            />
-            <span class="validacion" v-if="ValNombre">
-              El nombre debe tener un minimo de 4 caracteres
-            </span>
-          </div>
-          <div
-            class="form-group mb-4 px-2 d-flex flex-column align-items-start"
-          >
-            <label class="form-label" for="username"
-              ><i class="bi bi-person-fill text-primary"></i> Nombre de
-              usuario</label
-            >
-            <input
-              v-model="UserName"
-              type="text"
-              name="UserName"
-              id="username"
-              class="form-control form-control-sm"
-            />
-            <span class="validacion" v-if="ValNombreUsuMin">
-              El nombre de usuario debe tener un minimo de 4 caracteres
-            </span>
-             <span class="validacion" v-if="ValNombreUsuMax">
-              El nombre de usuario debe tener un maximo de 8 caracteres
-            </span>
-          </div>
-          <!--
-         <div class="form-group mb-4 px-2 d-flex flex-column align-items-start">
-            <label class="form-label" for="imageninput"
-              ><i class="bi bi-image-fill text-primary"></i> Imagen de perfil</label
-            >
-            <input
-              type="file"
-              name="ImagenPerfil"
-              id="imageninput"
-              class="form-control form-control-sm"
-            />
-          </div>-->
-          <div
-            class="form-group mb-4 px-2 d-flex flex-column align-items-start"
-          >
-            <label class="form-label" for="bio"
-              ><i class="bi bi-body-text text-primary"></i> Bio (opcional)</label
-            >
-            <textarea
-              v-model="BioUsuario"             
-              name="Bio"
-              id="bio"
-              class="form-control form-control-sm"
-            />
-          </div>
-
-          <div
-            class="form-group mb-4 px-2 d-flex flex-column align-items-start"
-          >
-            <label class="form-label" for="passwdinput"
-              ><i class="bi bi-key-fill text-primary"></i> Contraseña</label
-            >
-            <input
-              v-model="Contraseña"
-              type="password"
-              name="Contraseña"
-              id="passwdinput"
-              class="form-control form-control-sm"
-            />
-            <span class="validacion" v-if="valContraseñaMin">
-              La contraseña no debe tener menos de 8 caracteres
-            </span>
-            <span class="validacion" v-if="validarContraseñas">
-                Las contraseñas no coinciden
-            </span>
-          </div>
-          <div
-            class="form-group mb-4 px-2 d-flex flex-column align-items-start"
-          >
-            <label class="form-label" for="confirmpasswdinput"
-              ><i class="bi bi-key-fill text-primary"></i> Confirmar
-              contraseña</label
-            >
-            <input
-              type="password"
-              id="confirmpasswdinput"
-              class="form-control form-control-sm"
-              v-model="ConfirmarClave"
-            />
-            <span class="validacion" v-if="validarContraseñas">
-                Las contraseñas no coinciden
-            </span>
-          </div>
-          <div class="boton-container">
-            <button
-              @click="crearUsuario"
-              type="submit"
-              class="
-                boton
-                btn
-                text-primary
-                bg-white
-                border border-primary
-                btn-block
-                boton
-              "
-            >
-              Crear cuenta
-            </button>
-          </div>
-          <div class="mt-4">
-            <div class="d-flex justify-content-center links">
-              <p>
-                ¿Ya tienes una cuenta?
-                <router-link
-                  class="hiperLink text-primary"
-                  :to="{ name: 'Login' }"
-                  >¡Inicia sesion aqui!</router-link
+    <transition appear  @enter="enter">
+      <div class="col-sm-6 col-12 img-container">
+        <img src="../assets/register.png" alt="" class="h-100 w-100" />
+      </div>
+    </transition>
+    
+      <div class="col-sm-6 col-12 form-container p-2 h-100
+            d-flex
+            flex-column
+            align-items-center
+            justify-content-center">        
+          <form class="inner-form-container">
+            <transition appear @enter="mailEnter">
+              <div
+                class="form-group mb-4 px-2 d-flex flex-column align-items-start"
+              >
+                <label class="form-label" for="emailinput"
+                  ><i class="bi bi-envelope-fill text-primary"></i> E-Mail</label
                 >
-              </p>
-            </div>
-          </div>
-        </form>
+                <input
+                  v-model="Email"
+                  type="email"
+                  name="Email"
+                  id="emailinput"
+                  class="form-control form-control-sm"
+                />
+                <span class="validacion" v-if="EmailExist">
+                  El mail ingresado ya existe
+                </span>
+               <span class="validacion" v-if="valEmail">
+                  El campo E-Mail es requerido
+               </span>
+               <span class="validacion" v-if="mailFormat">
+                  Formato de E-Mail incorrecto
+               </span>
+              </div>
+            </transition>
+            <transition appear @enter="nameEnter">
+              <div
+                class="form-group mb-4 px-2 d-flex flex-column align-items-start"
+              >
+                <label class="form-label" for="nombreinput"
+                  ><i class="bi bi-person-fill text-primary"></i> Nombre</label
+                >
+                <input
+                  v-model="Nombre"
+                  type="text"
+                  name="Nombre"
+                  id="nombreinput"
+                  class="form-control form-control-sm"
+                />
+                <span class="validacion" v-if="ValNombre">
+                  El nombre debe tener un minimo de 4 caracteres
+                </span>
+              </div>
+            </transition>
+            <transition appear @enter="nameUsuEnter">
+              <div
+                class="form-group mb-4 px-2 d-flex flex-column align-items-start"
+              >
+                <label class="form-label" for="username"
+                  ><i class="bi bi-person-fill text-primary"></i> Nombre de
+                  usuario</label
+                >
+                <input
+                  v-model="UserName"
+                  type="text"
+                  name="UserName"
+                  id="username"
+                  class="form-control form-control-sm"
+                />
+                <span class="validacion" v-if="ValNombreUsuMin">
+                  El nombre de usuario debe tener un minimo de 4 caracteres
+                </span>
+                 <span class="validacion" v-if="ValNombreUsuMax">
+                  El nombre de usuario debe tener un maximo de 8 caracteres
+                </span>
+              </div>
+            </transition>
+            <!--
+           <div class="form-group mb-4 px-2 d-flex flex-column align-items-start">
+              <label class="form-label" for="imageninput"
+                ><i class="bi bi-image-fill text-primary"></i> Imagen de perfil</label
+              >
+              <input
+                type="file"
+                name="ImagenPerfil"
+                id="imageninput"
+                class="form-control form-control-sm"
+              />
+            </div>-->
+            <transition appear @enter="bioEnter">
+              <div
+                class="form-group mb-4 px-2 d-flex flex-column align-items-start"
+              >
+                <label class="form-label" for="bio"
+                  ><i class="bi bi-body-text text-primary"></i> Bio (opcional)</label
+                >
+                <textarea
+                  v-model="BioUsuario"
+                  name="Bio"
+                  id="bio"
+                  class="form-control form-control-sm"
+                />
+              </div>
+            </transition>
+            <transition appear @enter="passEnter">
+              <div
+                class="form-group mb-4 px-2 d-flex flex-column align-items-start"
+              >
+                <label class="form-label" for="passwdinput"
+                  ><i class="bi bi-key-fill text-primary"></i> Contraseña</label
+                >
+                <input
+                  v-model="Contraseña"
+                  type="password"
+                  name="Contraseña"
+                  id="passwdinput"
+                  class="form-control form-control-sm"
+                />
+                <span class="validacion" v-if="valContraseñaMin">
+                  La contraseña no debe tener menos de 8 caracteres
+                </span>
+                <span class="validacion" v-if="validarContraseñas">
+                    Las contraseñas no coinciden
+                </span>
+              </div>
+            </transition>
+            <transition appear @enter="passConEnter">
+              <div
+                class="form-group mb-4 px-2 d-flex flex-column align-items-start"
+              >
+                <label class="form-label" for="confirmpasswdinput"
+                  ><i class="bi bi-key-fill text-primary"></i> Confirmar
+                  contraseña</label
+                >
+                <input
+                  type="password"
+                  id="confirmpasswdinput"
+                  class="form-control form-control-sm"
+                  v-model="ConfirmarClave"
+                />
+                <span class="validacion" v-if="validarContraseñas">
+                    Las contraseñas no coinciden
+                </span>
+              </div>
+            </transition>
+            <transition appear @enter="btnEnter">
+              <div class="boton-container">
+                <button
+                  @click="crearUsuario"
+                  type="submit"
+                  class="
+                    boton
+                    btn
+                    text-primary
+                    bg-white
+                    border border-primary
+                    btn-block
+                    boton
+                  "
+                >
+                  Crear cuenta
+                </button>
+              </div>
+            </transition>
+            <transition appear @enter="txtEnter">
+              <div class="mt-4">
+                <div class="d-flex justify-content-center links">
+                  <p>
+                    ¿Ya tienes una cuenta?
+                    <router-link
+                      class="hiperLink text-primary"
+                      :to="{ name: 'Login' }"
+                      >¡Inicia sesion aqui!</router-link
+                    >
+                  </p>
+                </div>
+              </div>
+            </transition>
+          </form>
       </div>
     </div>
-  </div>
+    
+  
 </template>
 
 <script>
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import gsap from 'gsap'; 
 
 export default {
   name: "Registro",
@@ -203,8 +217,94 @@ export default {
   },
 
   methods: {
+//--------------------------------------------------------ANIMATION METHODS-----------------------------------------------//
+   
+    enter(el){
+      gsap.from(el, {
+        opacity: 0,
+        duration: 4,
+        delay: .5
+      })
+    }, 
+    
+    mailEnter(el){
+      gsap.from(el, {
+        opacity: 0,
+        duration: 2,
+        y: 60,
+        delay: 1
+      })
+    },
+
+    nameEnter(el){
+      gsap.from(el, {
+        opacity: 0,
+        duration: 2,
+        y: 60,
+        delay: 1.5
+      })
+    },
+
+    nameUsuEnter(el){
+      gsap.from(el, {
+        opacity: 0,
+        duration: 2,
+        y: 60,
+        delay: 2
+      })
+    },
+
+    bioEnter(el){
+      gsap.from(el, {
+        opacity: 0,
+        duration: 2,
+        y: 60,
+        delay: 2.5
+      })
+    },
+
+    passEnter(el){
+      gsap.from(el, {
+        opacity: 0,
+        duration: 2,
+        y: 60,
+        delay: 3
+      })
+    },
+
+    passConEnter(el){
+      gsap.from(el, {
+        opacity: 0,
+        duration: 2,
+        y: 60,
+        delay: 3.5
+      })
+    },
+
+      btnEnter(el){
+      gsap.from(el, {
+        opacity: 0,
+        duration: 2,
+        x: -120,
+        delay: 4
+      })
+    },
+
+      txtEnter(el){
+      gsap.from(el, {
+        opacity: 0,
+        duration: 2,
+        x: -120,
+        delay: 4.5
+      })
+    },
+
+  
+//--------------------------------------------------------ANIMATION METHODS END-----------------------------------------------//
+
+//--------------------------------------------------------VALIDATION METHODS-----------------------------------------------//
     ValEmailExist(){
-      EmailExist = true
+      this.EmailExist = true
     },
 
     ValEmailLenMin(){
@@ -264,7 +364,7 @@ export default {
         this.validarContraseñas = true
       } 
     },
-
+//--------------------------------------------------------VALIDATION METHODS END-----------------------------------------------//
     crearUsuario(e) {
       e.preventDefault();
       this.ValEmailLenMin();
@@ -274,7 +374,7 @@ export default {
       this.validarNomUsu(); 
       this.ContraseñaMin(); 
       this.valContraseñas();  
-      this.ContraseñaLenOk();
+      this.ContraseñaLenOk();     
       let datos = this;
       let jsonDatos = {
         Email: datos.Email,
@@ -286,14 +386,17 @@ export default {
       };
       
       axios.post("https://localhost:7158/api/Usuario/CrearUsuario", jsonDatos).then(res =>{
-      console.log(res);
+      
       if(res.status === 200)
       {
        alert("Usuario registrado con exito")
-       window.location.replace('/Login');
+       window.location.replace('/Login')
       }
-      else if(res.status == 401){
-        this.ValEmailExist()
+      else if(AxiosError.code === 'ERR_BAD_REQUEST'){
+         ValEmailExist()
+      }
+      else{
+        console.error(AxiosError)
       }
          
         });
