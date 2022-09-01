@@ -29,12 +29,15 @@
                   ><i class="bi bi-envelope-fill text-primary"></i> E-Mail</label
                 >
                 <input
+                @input="ValEmailFormat(), emailVacio()"
                   v-model="Email"
                   type="email"
+                  autocomplete="off"
                   name="Email"
                   id="emailinput"
                   class="form-control form-control-sm"
                 />
+                
                 <span class="validacion" v-if="mailFormat">
                   Formato de E-Mail incorrecto
                </span>
@@ -49,12 +52,27 @@
                   ><i class="bi bi-key-fill text-primary"></i> Contraseña</label
                 >
                 <input
+                @input="passVacio()"
+                  v-if="!showPass"
                   v-model="Contraseña"
                   type="password"
                   name="Contraseña"
                   id="passwdinput"
                   class="form-control form-control-sm"
                 />
+                <input
+                @input="passVacio()"
+                  v-if="showPass"
+                  v-model="Contraseña"
+                  type="text"
+                  name="Contraseña"
+                  id="passwdinput"
+                  class="form-control form-control-sm"
+                />
+                <div class="check">
+                  <input type="checkbox" v-model="showPass">
+                  <span><i class="text-primary" :class="mclass" v-if="showPass == true ? mclass='bi bi-eye-fill': mclass='bi bi-eye-slash-fill'"></i></span>
+                </div> 
                 <span class="validacion" v-if="valPass">
                   El campo "Contraseña" es requerido
                 </span>
@@ -110,7 +128,9 @@ export default {
         mailFormat: false,
         Contraseña: '',
         valPass: false,
-        valCred: false
+        valCred: false,
+        showPass: false,
+        mclass: "bi bi-eye-slash-fill"
       }
     },
     methods:{  
@@ -161,10 +181,13 @@ export default {
        emailVacio(){
         if(this.Email.length === 0)
         this.valEmail = true
+        else{
+          this.valEmail = false
+        }
       },
 
       ValEmailFormat(){
-      var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      var validRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
       if(this.Email.match(validRegex)){
         this.mailFormat = false
       }else{
@@ -175,6 +198,9 @@ export default {
        passVacio(){
         if(this.Contraseña.length === 0)
         this.valPass = true
+        else{
+          this.valPass = false
+        }
       },
 
        credInvalido(){
@@ -195,8 +221,7 @@ export default {
       axios.post('https://localhost:7158/api/Usuario/Login', jsonDatos).then(res =>{
       console.log(res);
       if(res.status === 200)
-      {
-       alert("Usuario logeado con exito")
+      {       
        window.location.replace('/Test');
       }
       else{
@@ -225,13 +250,19 @@ export default {
 }
 
 .validacion{
-  background-color: transparent;
+ background-color: transparent;
   border-radius: 16px;
   border: 1px solid crimson;
   color: crimson;
   margin-top: 5px;
-  padding: 5px;
+  padding: 3px 10px;
   font-weight: bold;
+  font-size: 14px;
+}
+
+.check{
+  display: flex;
+  gap: 5px;
 }
 
 </style>

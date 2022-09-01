@@ -22,7 +22,9 @@
                   ><i class="bi bi-envelope-fill text-primary"></i> E-Mail</label
                 >
                 <input
+                @input="ValEmailLenMin(), ValEmailLenMax(), ValEmailFormat()"
                   v-model="Email"
+                  autocomplete="off"
                   type="email"
                   name="Email"
                   id="emailinput"
@@ -47,7 +49,9 @@
                   ><i class="bi bi-person-fill text-primary"></i> Nombre</label
                 >
                 <input
+                  @input="validarNombre()"                  
                   v-model="Nombre"
+                  autocomplete="off"
                   type="text"
                   name="Nombre"
                   id="nombreinput"
@@ -55,6 +59,9 @@
                 />
                 <span class="validacion" v-if="ValNombre">
                   El nombre debe tener un minimo de 4 caracteres
+                </span>
+                <span class="validacion" v-if="campoName">
+                    El campo "Nombre" es requerido
                 </span>
               </div>
             </transition>
@@ -67,7 +74,9 @@
                   usuario</label
                 >
                 <input
+                @input="validarNomUsu()"
                   v-model="UserName"
+                  autocomplete="off"
                   type="text"
                   name="UserName"
                   id="username"
@@ -78,6 +87,9 @@
                 </span>
                  <span class="validacion" v-if="ValNombreUsuMax">
                   El nombre de usuario debe tener un maximo de 8 caracteres
+                </span>
+                <span class="validacion" v-if="campoUserName">
+                    El campo "Nombre de usuario" es requerido
                 </span>
               </div>
             </transition>
@@ -116,20 +128,38 @@
                   ><i class="bi bi-key-fill text-primary"></i> Contraseña</label
                 >
                 <input
+                @input="ContraseñaLenOk(), valContraseñas()"
+                  v-if="!showPass"
                   v-model="Contraseña"
                   type="password"
                   name="Contraseña"
                   id="passwdinput"
                   class="form-control form-control-sm"
                 />
+                <input
+                @input="ContraseñaLenOk(), valContraseñas()"
+                  v-if="showPass"
+                  v-model="Contraseña"
+                  type="text"
+                  name="Contraseña"
+                  id="passwdinput"
+                  class="form-control form-control-sm"
+                />
+                <div class="check">
+                  <input type="checkbox" v-model="showPass">
+                  <span><i class="text-primary" :class="mclass" v-if="showPass == true ? mclass='bi bi-eye-fill': mclass='bi bi-eye-slash-fill'"></i></span>
+                </div> 
                 <span class="validacion" v-if="valContraseñaMin">
                   La contraseña no debe tener menos de 8 caracteres
                 </span>
                 <span class="validacion" v-if="validarContraseñas">
                     Las contraseñas no coinciden
                 </span>
+                <span class="validacion" v-if="campoContraseña">
+                    El campo "Contraseña" es requerido
+                </span>                             
               </div>
-            </transition>
+            </transition>            
             <transition appear @enter="passConEnter">
               <div
                 class="form-group mb-4 px-2 d-flex flex-column align-items-start"
@@ -139,6 +169,7 @@
                   contraseña</label
                 >
                 <input
+                @input="valContraseñas()"
                   type="password"
                   id="confirmpasswdinput"
                   class="form-control form-control-sm"
@@ -212,7 +243,12 @@ export default {
       valContraseñaMin: false,      
       ConfirmarClave: "",      
       validarContraseñas: false,
-      BioUsuario: ""
+      BioUsuario: "",
+      campoName: false,
+      campoUserName: false,
+      campoContraseña: false,
+      showPass: false,
+      mclass: "bi bi-eye-slash-fill"
     };
   },
 
@@ -320,7 +356,7 @@ export default {
     },
 
     ValEmailFormat(){
-      var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      var validRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
       if(this.Email.match(validRegex)){
         this.mailFormat = false
       }else{
@@ -331,6 +367,17 @@ export default {
     validarNombre(){
       if(this.Nombre.length < 4){
         this.ValNombre = true
+        this.campoName = false
+      }
+
+      if(this.Nombre.length === 0){
+        this.ValNombre = false
+        this.campoName = true
+      }
+
+      if(this.Nombre.length >= 4){
+        this.ValNombre = false
+        this.campoName = false
       }
     },
 
@@ -338,23 +385,42 @@ export default {
       if(this.UserName.length < 4){
         this.ValNombreUsuMin = true
         this.ValNombreUsuMax = false
+        this.campoUserName = false
       } 
 
       if(this.UserName.length > 8){
         this.ValNombreUsuMax = true
         this.ValNombreUsuMin = false
+        this.campoUserName = false
       }
-    },
 
-    ContraseñaMin(){
-      if(this.Contraseña.length < 8){
-        this.valContraseñaMin = true
+       if(this.UserName.length >= 4 && this.UserName.length <= 8){
+        this.ValNombreUsuMax = false
+        this.ValNombreUsuMin = false
+        this.campoUserName = false
       }
-    },
+
+      if(this.UserName.length === 0){
+        this.ValNombreUsuMax = false
+        this.ValNombreUsuMin = false
+        this.campoUserName = true
+      }
+    },  
 
     ContraseñaLenOk(){
       if(this.Contraseña.length >= 8){
         this.valContraseñaMin = false
+        this.campoContraseña = false
+      }
+
+      if(this.Contraseña.length < 8){
+        this.valContraseñaMin = true
+        this.campoContraseña = false
+      }
+
+      if(this.Contraseña.length === 0){
+        this.valContraseñaMin = false
+        this.campoContraseña = true
       }
     },
 
@@ -362,6 +428,11 @@ export default {
       if(this.Contraseña !== this.ConfirmarClave)
       {
         this.validarContraseñas = true
+      } 
+
+      if(this.Contraseña === this.ConfirmarClave)
+      {
+        this.validarContraseñas = false
       } 
     },
 //--------------------------------------------------------VALIDATION METHODS END-----------------------------------------------//
@@ -371,10 +442,9 @@ export default {
       this.ValEmailFormat();
       this.ValEmailLenMax();
       this.validarNombre();  
-      this.validarNomUsu(); 
-      this.ContraseñaMin(); 
+      this.validarNomUsu();
       this.valContraseñas();  
-      this.ContraseñaLenOk();     
+      this.ContraseñaLenOk();    
       let datos = this;
       let jsonDatos = {
         Email: datos.Email,
@@ -386,29 +456,28 @@ export default {
       };
       
       axios.post("https://localhost:7158/api/Usuario/CrearUsuario", jsonDatos).then(res =>{
+       console.log(res.status);         
       
-      if(res.status === 200)
+     if(res.status === 200)
       {
        alert("Usuario registrado con exito")
        window.location.replace('/Login')
       }
-      else if(AxiosError.code === 'ERR_BAD_REQUEST'){
-         ValEmailExist()
+      else if(res.status === 204){       
+         this.ValEmailExist()
       }
-      else{
-        console.error(AxiosError)
-      }
-         
-        });
+            
+      })
+      .catch(function (error) {          
+        console.log(error)          
+      })
       //.then((res) => res.json())
       //.then((data => this.posts = data))
       //console.log(jsonDatos);
     },
   },
-};
-   
+};   
 </script>
-
 <style scoped>
 .hiperLink {
   text-decoration: none;
@@ -451,12 +520,18 @@ input:focus {
 }
 
 .validacion{
-   background-color: transparent;
+  background-color: transparent;
   border-radius: 16px;
   border: 1px solid crimson;
   color: crimson;
   margin-top: 5px;
-  padding: 5px;
+  padding: 3px 10px;
   font-weight: bold;
+  font-size: 14px;
+}
+
+.check{
+  display: flex;
+  gap: 5px;
 }
 </style>
