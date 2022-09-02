@@ -5,8 +5,10 @@
      <transition appear @enter="resEnter"> 
         <div v-if="res200" class="res-container">
           <div class="res">
-            <p class="text-primary">USUARIO CREADO CON EXITO</p>
-             <button @click="moveToLogin()" class="btn text-primary bg-white border border-primary btn-block">Aceptar</button>
+            <div class="inner-res">
+              <p class="text-primary">USUARIO CREADO CON EXITO</p>
+               <button @click="moveToLogin()" class="btn text-primary bg-white border border-primary btn-block">Aceptar</button>
+            </div>
           </div>
         </div>
       </transition>
@@ -477,7 +479,8 @@ export default {
 
   
 //--------------------------------------------------------VALIDATION METHODS END-----------------------------------------------//
-    showRes200(){      
+    showRes200(e){    
+      e.preventDefault();  
       this.res200 = true
       window.scrollTo(0,0);
     },
@@ -542,6 +545,7 @@ export default {
 };   
 </script>
 <style scoped>
+
 .hiperLink {
   text-decoration: none;
   font-weight: bold;
@@ -559,11 +563,11 @@ export default {
 }
 
 .img-container {
-  height: 85vh;
+  height: 100vh;
 }
 
 .form-container {
-  height: fit-content;  
+  height: 100vh;
   margin: 0;
 }
 
@@ -582,14 +586,27 @@ export default {
   height: 90vh;
   width: 90vw;
   border-radius: 10px;
-  background-color: rgba(0, 0, 0, .90);   
-  font-weight: bold;
-  font-size: 20px;
+ /* background-color: rgba(2, 117, 216, .3);    */
+  background-color: transparent;
   margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;  
+}
+
+.inner-res{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;  
+  height: 25vh;
+  width: 25vw;
+  border-radius: 10px;
+  background-color: white;
+  border: 2px solid black;
+  font-weight: bold;
+  font-size: 20px;
 }
 
 .inner-form-container {
