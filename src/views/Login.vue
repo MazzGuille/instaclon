@@ -222,7 +222,7 @@ export default {
       console.log(res);
       if(res.status === 200)
       {       
-       window.location.replace('/Test');
+       window.location.replace('/Profile');
       }
       else{
         this.credInvalido()
