@@ -479,8 +479,7 @@ export default {
 
   
 //--------------------------------------------------------VALIDATION METHODS END-----------------------------------------------//
-    showRes200(e){    
-      e.preventDefault();  
+    showRes200(){  
       this.res200 = true
       window.scrollTo(0,0);
     },
