@@ -170,7 +170,16 @@
                 >
                 <input
                 @input="valContraseñas()"
+                v-if="!showPass"
                   type="password"
+                  id="confirmpasswdinput"
+                  class="form-control form-control-sm"
+                  v-model="ConfirmarClave"
+                />
+                 <input
+                @input="valContraseñas()"
+                v-if="showPass"
+                  type="text"
                   id="confirmpasswdinput"
                   class="form-control form-control-sm"
                   v-model="ConfirmarClave"
@@ -497,7 +506,7 @@ export default {
 }
 
 .form-container {
-  height: 85vh;
+  min-height: 85vh;
 }
 
 .inner-form-container {
@@ -533,5 +542,15 @@ input:focus {
 .check{
   display: flex;
   gap: 5px;
+}
+
+@media (max-width: 430px){
+  .img-container{
+    display: none;
+  }
+
+  .form-container{
+    min-height: 100vh;
+  }
 }
 </style>
