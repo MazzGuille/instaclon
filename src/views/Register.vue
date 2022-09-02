@@ -2,6 +2,15 @@
   <div
     class="row m-2 d-flex align-content-center justify-content-center wrapper"
   >
+     <transition appear @enter="resEnter"> 
+        <div v-if="res200" class="res-container">
+          <div class="res">
+            <p class="text-primary">USUARIO CREADO CON EXITO</p>
+             <button @click="moveToLogin()" class="btn text-primary bg-white border border-primary btn-block">Aceptar</button>
+          </div>
+        </div>
+      </transition>
+     
     <transition appear  @enter="enter">
       <div class="col-sm-6 col-12 img-container">
         <img src="../assets/register.png" alt="" class="h-100 w-100" />
@@ -12,8 +21,8 @@
             d-flex
             flex-column
             align-items-center
-            justify-content-center">        
-          <form class="inner-form-container">
+            justify-content-center">                        
+          <form class="inner-form-container">            
             <transition appear @enter="mailEnter">
               <div
                 class="form-group mb-4 px-2 d-flex flex-column align-items-start"
@@ -93,18 +102,20 @@
                 </span>
               </div>
             </transition>
-            <!--
-           <div class="form-group mb-4 px-2 d-flex flex-column align-items-start">
+          
+          <!-- <div class="form-group mb-4 px-2 d-flex flex-column align-items-start">
               <label class="form-label" for="imageninput"
                 ><i class="bi bi-image-fill text-primary"></i> Imagen de perfil</label
               >
               <input
+              v-model="ruta"
                 type="file"
                 name="ImagenPerfil"
                 id="imageninput"
                 class="form-control form-control-sm"
               />
             </div>-->
+
             <transition appear @enter="bioEnter">
               <div
                 class="form-group mb-4 px-2 d-flex flex-column align-items-start"
@@ -189,13 +200,14 @@
                 </span>
               </div>
             </transition>
+            
             <transition appear @enter="btnEnter">
               <div class="boton-container">
                 <button
                   @click="crearUsuario"
                   type="submit"
-                  class="
-                    boton
+                  class=" 
+                    boton                  
                     btn
                     text-primary
                     bg-white
@@ -230,7 +242,7 @@
 </template>
 
 <script>
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import gsap from 'gsap'; 
 
 export default {
@@ -257,7 +269,10 @@ export default {
       campoUserName: false,
       campoContraseña: false,
       showPass: false,
-      mclass: "bi bi-eye-slash-fill"
+      mclass: "bi bi-eye-slash-fill",
+      ruta: '',
+      res200:false,
+      
     };
   },
 
@@ -344,6 +359,21 @@ export default {
       })
     },
 
+     resEnter(el){
+      gsap.from(el,{
+        opacity: 0,
+        scale: .5,
+        duration: .5,
+        delay: .25
+      })
+    },
+    resLeave(el){
+      gsap.to(el,{        
+        x: 200,
+        duration: .5,
+        delay: .25
+      })
+    },
   
 //--------------------------------------------------------ANIMATION METHODS END-----------------------------------------------//
 
@@ -444,7 +474,18 @@ export default {
         this.validarContraseñas = false
       } 
     },
+
+  
 //--------------------------------------------------------VALIDATION METHODS END-----------------------------------------------//
+    showRes200(){      
+      this.res200 = true
+      window.scrollTo(0,0);
+    },
+
+    moveToLogin(){
+      window.location.replace('/Login')
+    }, 
+
     crearUsuario(e) {
       e.preventDefault();
       this.ValEmailLenMin();
@@ -464,26 +505,39 @@ export default {
         BioUsuario: datos.BioUsuario,
       };
       
-      axios.post("https://localhost:7158/api/Usuario/CrearUsuario", jsonDatos).then(res =>{
+      axios.post('https://localhost:7158/api/Usuario/CrearUsuario', jsonDatos).then(res =>{
        console.log(res.status);         
       
-     if(res.status === 200)
-      {
-       alert("Usuario registrado con exito")
-       window.location.replace('/Login')
+     if(res.status === 200){
+        this.showRes200()      
       }
       else if(res.status === 204){       
          this.ValEmailExist()
-      }
+      }     
             
-      })
-      .catch(function (error) {          
-        console.log(error)          
-      })
+      }).catch(function (error) {          
+        console.log(error)        
+      })  
+      
       //.then((res) => res.json())
       //.then((data => this.posts = data))
       //console.log(jsonDatos);
     },
+
+/*
+    loadImg(e){
+      e.preventDefault();      
+      let jsonDatos = {
+        Ruta: this.ruta
+      };
+      axios.post("https://localhost:7158/api/Usuario/CargarArchivo", jsonDatos).then(res =>{
+        console.log(res.status);
+      }).catch(function (error) {          
+        console.log(error)          
+      })
+    }
+*/
+    
   },
 };   
 </script>
@@ -495,10 +549,13 @@ export default {
 }
 
 .wrapper {
-  width: 90vw;
+  width: 100vw;
   height: 100vh;  
   margin-right: auto;
   margin-left: auto;
+  padding-left: 5vw;
+  padding-right: 5vw;
+  position: relative;
 }
 
 .img-container {
@@ -506,7 +563,33 @@ export default {
 }
 
 .form-container {
-  min-height: 85vh;
+  height: fit-content;  
+  margin: 0;
+}
+
+.res-container{
+  position: absolute;
+  height: 100%;
+  width: 100%;  
+  z-index: 10; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;  
+}
+
+.res{
+  height: 90vh;
+  width: 90vw;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, .90);   
+  font-weight: bold;
+  font-size: 20px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;  
 }
 
 .inner-form-container {

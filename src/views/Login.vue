@@ -226,10 +226,10 @@ export default {
       }
       else{
         this.credInvalido()
-      }
-      
-      
-    });   
+      }     
+    }).catch(function (error) {          
+        console.log(error)          
+      })
 
   }
 }
