@@ -206,7 +206,7 @@
             <transition appear @enter="btnEnter">
               <div class="boton-container">
                 <button
-                  @click="crearUsuario"
+                  @click="showRes200"
                   type="submit"
                   class=" 
                     boton                  
@@ -246,6 +246,7 @@
 <script>
 import axios from "axios";
 import gsap from 'gsap'; 
+import router from '@/router';
 
 export default {
   name: "Registro",
@@ -369,13 +370,7 @@ export default {
         delay: .25
       })
     },
-    resLeave(el){
-      gsap.to(el,{        
-        x: 200,
-        duration: .5,
-        delay: .25
-      })
-    },
+   
   
 //--------------------------------------------------------ANIMATION METHODS END-----------------------------------------------//
 
@@ -429,13 +424,13 @@ export default {
         this.campoUserName = false
       } 
 
-      if(this.UserName.length > 8){
+      if(this.UserName.length > 12){
         this.ValNombreUsuMax = true
         this.ValNombreUsuMin = false
         this.campoUserName = false
       }
 
-       if(this.UserName.length >= 4 && this.UserName.length <= 8){
+       if(this.UserName.length >= 4 && this.UserName.length <= 12){
         this.ValNombreUsuMax = false
         this.ValNombreUsuMin = false
         this.campoUserName = false
@@ -479,13 +474,14 @@ export default {
 
   
 //--------------------------------------------------------VALIDATION METHODS END-----------------------------------------------//
-    showRes200(){  
+    showRes200(e){  
+      e.preventDefault()
       this.res200 = true
       window.scrollTo(0,0);
     },
 
     moveToLogin(){
-      window.location.replace('/Login')
+      router.push('/Login')
     }, 
 
     crearUsuario(e) {

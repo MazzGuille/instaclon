@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import Sidebar from '../components/sidebar/Sidebar.vue'
+import Sidebar from '../components/Sidebar.vue'
     export default {
         name: 'Profile',
         components:{

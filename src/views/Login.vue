@@ -22,7 +22,7 @@
       </transition>
       <div class="col-sm-6 col-12 form-container mt-5 p-2 h-100 d-flex align-items-center justify-content-center">
     
-          <form  class="inner-form-container">
+          <form @click.prevent="iniciarSesion" class="inner-form-container">
             <transition appear @enter="mailEnter">
               <div class="form-group mb-4 px-2 d-flex flex-column align-items-start">
                 <label class="form-label" for="emailinput"
@@ -83,8 +83,7 @@
             </span>
             <transition appear @enter="btnEnter">
               <div class="boton-container mt-2">
-                <button
-                 @click="iniciarSesion"
+                <button                 
                   type="submit"
                   class="
                     boton
@@ -118,6 +117,7 @@
 <script>
 import axios from "axios";
 import gsap from 'gsap';
+import router from '@/router';
 
 export default {
   name:'Login',
@@ -207,9 +207,7 @@ export default {
         this.valCred = true
       },
       
-      iniciarSesion(e){
-      e.preventDefault();
-
+      iniciarSesion(){        
       this.emailVacio();
       this.passVacio();
       this.ValEmailFormat();
@@ -222,7 +220,7 @@ export default {
       console.log(res);
       if(res.status === 200)
       {       
-       window.location.replace('/Profile');
+       router.push('/HomeView')
       }
       else{
         this.credInvalido()
